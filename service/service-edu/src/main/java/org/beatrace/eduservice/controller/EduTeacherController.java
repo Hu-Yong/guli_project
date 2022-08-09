@@ -85,9 +85,5 @@ public class EduTeacherController {
         return flag ? R.ok() : R.error();
     }
 
-    public void test_git() {
-        System.out.println("test git");
-    }
-
 }
 
