@@ -29,6 +29,7 @@ public class EduTeacherController {
     private EduTeacherService teacherService;
     // 查询数据
 
+    @ApiOperation(value = "查询所有数据")
     @GetMapping("findAll")
     public R findAllTeacher() {
         List<EduTeacher> list = teacherService.list(null);
@@ -36,6 +37,7 @@ public class EduTeacherController {
     }
 
     //逻辑删除讲师
+    @ApiOperation(value = "删除讲师")
     @DeleteMapping("/deleteTeacherById/{id}")
     public R deleteTeacherById(@PathVariable String id){
 
@@ -48,6 +50,7 @@ public class EduTeacherController {
     }
 
     //分页查询
+    @ApiOperation(value = "分页查询")
     @GetMapping("/pageList/{page}/{limit}")
     public R pageList(@ApiParam(name = "page", value = "当前页码", required = true)@PathVariable Long page,
                       @ApiParam(name = "limit", value = "每页记录数", required = true)@PathVariable Long limit
@@ -82,6 +85,22 @@ public class EduTeacherController {
     @PostMapping("/save")
     public R save(@RequestBody EduTeacher eduTeacher) {
         boolean flag = teacherService.save(eduTeacher);
+        return flag ? R.ok() : R.error();
+    }
+
+    //查询讲师自动回显
+    @ApiOperation(value = "根据ID查询讲师")
+    @GetMapping("/getById/{id}")
+    public R getById(@ApiParam(name = "id", value = "讲师ID", required = true)
+                     @PathVariable String id) {
+        EduTeacher teacherinfo = teacherService.getById(id);
+        return R.ok().data("item", teacherinfo);
+    }
+
+    @ApiOperation(value = "根据ID修改讲师")
+    @PostMapping("updateById")
+    public R updateById(@RequestBody EduTeacher eduTeacher) {
+        boolean flag = teacherService.updateById(eduTeacher);
         return flag ? R.ok() : R.error();
     }
 
