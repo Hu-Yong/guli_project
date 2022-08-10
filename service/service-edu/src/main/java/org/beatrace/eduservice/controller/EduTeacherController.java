@@ -2,6 +2,7 @@ package org.beatrace.eduservice.controller;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.beatrace.commonutils.R;
@@ -21,6 +22,7 @@ import java.util.List;
  * @author beatrace
  * @since 2022-08-08
  */
+@Api(tags = "测试Api接口")
 @RestController
 @RequestMapping("/eduservice/edu-teacher")
 public class EduTeacherController {
@@ -56,6 +58,9 @@ public class EduTeacherController {
                       @ApiParam(name = "limit", value = "每页记录数", required = true)@PathVariable Long limit
     ) {
         Page<EduTeacher> pageParam = new Page<>(page, limit);
+
+        //手动实现一个异常
+        int tmp = 10/0;
         //分页查询，查完后，会将数据封装在pageParam中
         teacherService.page(pageParam,null);
         //获取查询到的数据
