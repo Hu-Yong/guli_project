@@ -10,17 +10,18 @@
 
 <body>
     <div id="app">
-        <h1 v-bind:title="message">
-            {{content}}
-        </h1>
+        <input type="text" v-bind:value = "searchMap.keyWord">
+        <input type="text" v-model = "searchMap.keyWord">
+        <p>{{searchMap.keyWord}}</p>
     </div>
     <script src="vue.min.js"></script>
     <script>
         new Vue({
             el: '#app',
             data: {
-                content: '我是标题',
-                message: '页面加载于' + new Date().toLocaleString()   
+                searchMap:{
+                    keyWord: '尚硅谷'
+                }
             }
         })
     </script>
