@@ -1,5 +1,40 @@
 <template>
   <div class="app-container">
+    <el-form :inline="true" class="demo-form-inline">
+        <el-form-item>
+            <el-input v-model="searchObj.name" placeholder="讲师名"/>
+        </el-form-item>
+        <el-form-item>
+            <el-select v-model="searchObj.level" clearable placeholder="讲师头衔">
+                <el-option :value="1" label="高级讲师"></el-option>
+                <el-option :value="2" label="首席讲师"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="添加时间">
+            <el-date-picker
+                v-model="searchObj.begin"
+                type="datetime"
+                placeholder="选择开始时间"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                default-time="00:00:00"
+            />
+        </el-form-item>
+        <el-form-item label="添加时间">
+            <el-date-picker
+                v-model="searchObj.end"
+                type="datetime"
+                placeholder="选择截至时间"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                default-time="00:00:00"
+            />
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" icon="el-icon-search" @click="fetchData()">查询</el-button>
+            <el-button type="default" @click="resetData()">清空</el-button>
+        </el-form-item>
+    </el-form>
+
+
     <!-- 表格 -->
     <el-table
         v-loading="listLoading"
@@ -81,6 +116,39 @@ export default{
                 this.total = response.data.total
             }
             this.listLoading = false
+            })
+        },
+        resetData() {
+            this.searchObj = {}
+            this.fetchData()
+        },
+        removeDataById(id) {
+            // debugger
+            // console.log(memberId)
+            this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                return teacher.removeById(id)
+            }).then(() => {
+                this.fetchData()
+                this.$message({
+                    type: 'success',
+                    message: '删除成功!'
+                })
+            }).catch((response) => { // 失败
+                if (response === 'cancel') {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    })
+                } else {
+                    this.$message({
+                    type: 'error',
+                    message: '删除失败'
+                    })
+                }
             })
         }
     }
